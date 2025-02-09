@@ -97,10 +97,11 @@ Important Notes:
 ## Usage
 
 1.  Connect the hardware components according to the pin definitions provided above.
-2.  Upload the firmware to the Arduino UNO.
-3.  Power cycle the device.
+2.  Upload the firmware to the Arduino UNO. Make sure driver is installed in Arduino root folder.
+3.  Power cycle the device. Red light on.
 4.  Point the sensor at the target object.
-5.  Read the temperature from the LCD display.
+5.  Read the temperature from the LCD display or serial monitor.
+
 
 ## Documentation Reference
 
