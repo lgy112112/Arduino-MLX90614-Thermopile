@@ -104,4 +104,4 @@ Important Notes:
 
 ## Documentation Reference
 
-*   **MLX90614 Datasheet:**  Consult the datasheet for complete sensor specifications, electrical characteristics, and communication protocol details.
+*   **MLX90614 Datasheet:**  [Consult the datasheet](https://cdn-shop.adafruit.com/datasheets/MLX90614.pdf) for complete sensor specifications, electrical characteristics, and communication protocol details.
