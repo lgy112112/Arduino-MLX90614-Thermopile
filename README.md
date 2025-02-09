@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project implements a non-contact infrared thermometer using an Arduino UNO, an MLX90614 IR temperature sensor, and a custom segment LCD driven by an HT1621.  The thermometer displays both object and ambient temperatures in real-time with a resolution of 0.1°C.
+This project implements a non-contact infrared thermometer using an Arduino UNO, an MLX90614 IR temperature sensor, and a custom segment LCD driven by an HT1621 (WAX-SEG68B is used and compatible with HT1621).  The thermometer displays both object and ambient temperatures in real-time with a resolution of 0.1°C.
 
 ## Hardware Components
 
