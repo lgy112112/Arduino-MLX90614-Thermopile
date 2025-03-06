@@ -19,10 +19,14 @@ void setup()
 void loop()
 {
 	float obj_temp_1 = mlx.readObjectTempC();
-  float obj_temp_2 = mlx.readObjectTempC2();
+  	// float obj_temp_2 = mlx.readObjectTempC2();
 	Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempC()); 
   	Serial.print("*C\tObject = "); Serial.print(obj_temp_1); Serial.println("*C");
     // Serial.print("*C\tObject 2 = "); Serial.print(obj_temp_2); Serial.println("*C");
+
+	// uint16_t rawValue = mlx.readEEPROM(MLX90614_EMISS);
+	// Serial.print("EEPROM 0x24 value: ");
+  // 	Serial.println(rawValue, HEX);
 
   	int temp[4] = {0,0,0,0};
   	temp[0] = int(obj_temp_1)/10;			// Tens place

@@ -18,8 +18,22 @@ boolean Adafruit_MLX90614::begin(void) {
   return true;
 }
 
-//////////////////////////////////////////////////////
+uint16_t Adafruit_MLX90614::readEEPROM(uint8_t addr) {
+  return read16(addr); // 
+}
 
+//////////////////////////////////////////////////////
+// READ THE TEMPERATURE FROM THE SENSOR
+// reg: the register to read from
+// returns: the temperature in Celsius
+float Adafruit_MLX90614::readTemp(uint8_t reg) {
+  float temp;
+  
+  temp = read16(reg);
+  temp *= .02; // 0.02 as an unit
+  temp  -= 273.15;
+  return temp;
+}
 
 double Adafruit_MLX90614::readObjectTempF(void) {
   return (readTemp(MLX90614_TOBJ1) * 9 / 5) + 32;
@@ -39,14 +53,10 @@ double Adafruit_MLX90614::readAmbientTempC(void) {
   return readTemp(MLX90614_TA);
 }
 
-float Adafruit_MLX90614::readTemp(uint8_t reg) {
-  float temp;
-  
-  temp = read16(reg);
-  temp *= .02; // 0.02 as an unit
-  temp  -= 273.15;
-  return temp;
+double Adafruit_MLX90614::readObjectTempC2(void) {
+  return readTemp(MLX90614_TOBJ2);
 }
+
 
 /*********************************************************************/
 
@@ -58,7 +68,7 @@ uint16_t Adafruit_MLX90614::read16(uint8_t a) {
   Wire.endTransmission(false); // end transmission
   
   Wire.requestFrom(_addr, (uint8_t)3);// send data n-bytes read
-  ret = Wire.read(); // receive DATA
+  ret = Wire.read(); // Receive DATA
   ret |= Wire.read() << 8; // receive DATA
 
   uint8_t pec = Wire.read();
