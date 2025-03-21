@@ -123,6 +123,31 @@ void writeEEPROM(uint8_t addr, uint16_t data) {
   delay(10); // 写入操作后延时,datasheet推荐至少10ms
 }
 
+void setEmissivity(double emissivity) {
+  // 1. 范围检查 (根据您的需要调整范围)
+  if (emissivity < 0.0) {
+    emissivity = 0.0;
+    Serial.println("Warning: Emissivity clamped to 0.0");
+  } else if (emissivity > 1.0) {
+    emissivity = 1.0;
+    Serial.println("Warning: Emissivity clamped to 1.0");
+  }
+
+  // 2. 转换为整数
+  uint16_t emissivity_int = round(65535.0 * emissivity);
+
+  // 3. (形式上的) 转换为十六进制 - 方便理解，实际上不需要
+  //  (省略)
+
+  // 4. 写入 EEPROM
+  Serial.print("Setting emissivity to: ");
+  Serial.println(emissivity);
+  Serial.print("  (0x");
+  Serial.print(emissivity_int, HEX);
+  Serial.println(")");
+  writeEEPROM(MLX90614_EMISS, emissivity_int);
+}
+
 void setup()
 {
 	unsigned int i;
@@ -135,15 +160,15 @@ void setup()
     // 初始化 MAX6675 传感器
     thermocouple = new MAX6675_Thermocouple(SCK_PIN, CS_PIN, SO_PIN);
 
-    // 读取并打印发射率
+    // 设置发射率为 0.92
+    setEmissivity(0.90);
+
+    // 读取并验证发射率
     uint16_t emissivity = mlx.readEEPROM(MLX90614_EMISS);
-    Serial.print("Original Emissivity: 0x");
+    Serial.print("Emissivity after setting: 0x");
     Serial.println(emissivity, HEX);
 	
 	delay(1000);
-
-    //  写入发射率
-    writeEEPROM(MLX90614_EMISS, 0x1234);
 
      // 验证是否写入成功
     emissivity = mlx.readEEPROM(MLX90614_EMISS);
@@ -155,10 +180,10 @@ void setup()
 void loop()
 {
 	// 读取 MLX90614 温度
-	// float obj_temp_1 = mlx.readObjectTempC();
-  // 	// float obj_temp_2 = mlx.readObjectTempC2();
-	// Serial.print("MLX90614 - Ambient = "); Serial.print(mlx.readAmbientTempC()); 
-  // 	Serial.print("*C\tObject = "); Serial.print(obj_temp_1); Serial.println("*C");
+	float obj_temp_1 = mlx.readObjectTempC();
+  	// float obj_temp_2 = mlx.readObjectTempC2();
+	Serial.print("MLX90614 - Ambient = "); Serial.print(mlx.readAmbientTempC()); 
+  	Serial.print("*C\tObject = "); Serial.print(obj_temp_1); Serial.println("*C");
     // Serial.print("*C\tObject 2 = "); Serial.print(obj_temp_2); Serial.println("*C");
 
 	// 读取并打印 MAX6675 温度
