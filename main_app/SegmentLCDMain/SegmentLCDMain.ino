@@ -161,7 +161,7 @@ void setup()
     thermocouple = new MAX6675_Thermocouple(SCK_PIN, CS_PIN, SO_PIN);
 
     // 设置发射率为 0.92
-    setEmissivity(0.90);
+    setEmissivity(0.83);
 
     // 读取并验证发射率
     uint16_t emissivity = mlx.readEEPROM(MLX90614_EMISS);
@@ -171,19 +171,29 @@ void setup()
 	delay(1000);
 
      // 验证是否写入成功
-    emissivity = mlx.readEEPROM(MLX90614_EMISS);
-    Serial.print("Emissivity after write: 0x");
-    Serial.println(emissivity, HEX);
+    // emissivity = mlx.readEEPROM(MLX90614_EMISS);
+    // Serial.print("Emissivity after write: 0x");
+    // Serial.println(emissivity, HEX);
 
 }
 
 void loop()
 {
 	// 读取 MLX90614 温度
+	unsigned long currentMillis = millis();
 	float obj_temp_1 = mlx.readObjectTempC();
   	// float obj_temp_2 = mlx.readObjectTempC2();
-	Serial.print("MLX90614 - Ambient = "); Serial.print(mlx.readAmbientTempC()); 
-  	Serial.print("*C\tObject = "); Serial.print(obj_temp_1); Serial.println("*C");
+    float ambient_temp = mlx.readAmbientTempC();
+    float max6675_temp = thermocouple->readCelsius();
+	Serial.print("[");
+	Serial.print(currentMillis);
+	Serial.print(" ms] MLX90614 - Ambient = "); 
+	Serial.print(ambient_temp); 
+  	Serial.print("*C\tObject = "); 
+	Serial.print(obj_temp_1); 
+	Serial.print("*C\tMAX6675 = ");
+	Serial.print(max6675_temp);
+	Serial.println("*C");
     // Serial.print("*C\tObject 2 = "); Serial.print(obj_temp_2); Serial.println("*C");
 
 	// 读取并打印 MAX6675 温度
@@ -192,10 +202,10 @@ void loop()
 	// Serial.print(max6675_temp);
 	// Serial.println("*C");
 
-  uint16_t emissivity = mlx.readEEPROM(MLX90614_EMISS);
-  emissivity = mlx.readEEPROM(MLX90614_EMISS);
-      Serial.print("Emissivity after write: 0x");
-      Serial.println(emissivity, HEX);
+  // uint16_t emissivity = mlx.readEEPROM(MLX90614_EMISS);
+  // emissivity = mlx.readEEPROM(MLX90614_EMISS);
+  //     Serial.print("Emissivity after write: 0x");
+  //     Serial.println(emissivity, HEX);
 	  
   // 	int temp[4] = {0,0,0,0};
   // 	temp[0] = int(obj_temp_1)/10;			// Tens place
@@ -208,5 +218,5 @@ void loop()
 	// Write_1621_data(3,num[temp[1]]);			// Display units place	
 	// Write_1621_data(4,num[temp[2]]|0x10);		// Display first decimal place
 	// Write_1621_data(5,0xe1);	// Display 'C' for Celsius
-	delay(1000);
+	delay(250);
 }
